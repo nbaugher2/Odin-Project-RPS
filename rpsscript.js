@@ -9,33 +9,53 @@ function getComputerChoice(){
 	}
 }
 
-function playRound(playerSelection, computerSelection){
-	let pS = playerSelection.toLowerCase();
+let score = 0;
+let compScore = 0;
+//retrieve results div
+let divResults = document.querySelector(".results");
+
+function playRound(event){
+	let pS = this.name
+	let computerSelection = getComputerChoice();
 	if (pS === "rock" && computerSelection ==="scissors"){
-		return "You Win! Rock beats Scissors";
+		score++;
+		divResults.textContent = `You Win! Rock beats Scissors ${score}:${compScore}`;
+		
 	}
 	else if(pS === "paper" && computerSelection === "rock"){
-		return "You Win! Paper beats rock";
+		score++;
+		divResults.textContent = `You Win! Paper beats rock${score}:${compScore}`;
 	}
 	else if(pS === "scissors" && computerSelection === "paper"){
-		return "You Win! Scissors beats Paper";
+		score++;
+		divResults.textContent = `You Win! Scissors beats Paper ${score}:${compScore}`;
+		
 	}
 	else if(pS === computerSelection){
-		return "A Tie!";
+		divResults.textContent = `A Tie! ${score}:${compScore}`;
 	}
-	return `You Lose :< ${computerSelection} beats ${pS}`;
+	else{
+		compScore++;
+		divResults.textContent = `You Lose :< ${computerSelection} beats ${pS} ${score}:${compScore}`;
+		
+	}
+	if (score === 5 || compScore === 5){
+		divResults.textContent = `Thanks for playng: final results = ${score}:${compScore}`;
+		rockButton.removeEventListener("click", playRound);
+		paperButton.removeEventListener("click", playRound);
+		scissorButton.removeEventListener("click", playRound);
+	}
+
 }
 
-function game(){
-	let score = 0;
-	for (let i = 0; i < 5; i++){
-		let outCome = playRound( prompt("Make your choice: "), getComputerChoice());
-		if (outCome.substr(0,7) === "You Win"){
-			score++;
-		}
-		console.log(outCome);
-	}
-	console.log("You won " + score + " times");
-}
+//add listener to rock button
+let rockButton = document.querySelector(".rock");
+rockButton.addEventListener("click", playRound);
 
-game();
+//add listener to paper button
+let paperButton = document.querySelector(".paper");
+paperButton.addEventListener("click", playRound);
+
+//add listener to scissor button
+let scissorButton = document.querySelector(".scissors");
+scissorButton.addEventListener("click", playRound);
